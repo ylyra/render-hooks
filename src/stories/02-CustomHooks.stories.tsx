@@ -28,7 +28,6 @@ const useDebounce = <T,>(value: T, delay: number): T => {
 export function CustomHooksExample() {
   return (
     <$ hooks={{ useToggle, useDebounce }}>
-      {/* @ts-ignore */}
       {({ useToggle, useDebounce, useState }) => { // Added useState for completeness
         const [open, toggle] = useToggle(false);
         const dOpen = useDebounce(open, 250);
