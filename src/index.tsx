@@ -51,13 +51,35 @@ type HooksMap = Record<string, any> & {
   length?: never; // This prevents arrays
 };
 
+type RenderHooksProps<TValue extends HooksMap> = {
+  /**
+   * Optionally pass in a map of hooks to use.
+   * 
+   * @example
+   * 
+   * ```tsx
+   * <RenderHooks hooks={{
+   *   useSomething: () => 'something',
+   * }}>
+   *   {({ useSomething }) => {
+   *     const something = useSomething();
+   *     return (
+   *       <>
+   *         <div>{something}</div>
+   *       </>
+   *     );
+   *   }}
+   * </RenderHooks>
+   * ```
+   */
+  hooks?: TValue;
+  children: (helpers: CoreHelpers & TValue) => React.ReactNode;
+}
+
 export default function RenderHooks<TValue extends HooksMap>({
   children,
   hooks = {} as TValue,
-}: {
-  hooks?: TValue;
-  children: (helpers: CoreHelpers & TValue) => React.ReactNode;
-}): React.ReactElement {
+}: RenderHooksProps<TValue>): React.ReactElement {
   const helpers = React.useMemo(
     () => ({ ...coreHelpers, ...(hooks ?? {}) }),
     [hooks],
