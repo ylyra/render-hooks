@@ -47,9 +47,7 @@ type CoreHelpers = typeof coreHelpers;
 /* ----------------------------------------------------------- *
  * 4 ▸ default component                                       *
  * ----------------------------------------------------------- */
-type HooksMap = Record<string, any> & {
-  length?: never; // This prevents arrays
-};
+type HooksMap = Record<string, any>
 
 type RenderHooksProps<TValue extends HooksMap> = {
   /**
@@ -72,7 +70,9 @@ type RenderHooksProps<TValue extends HooksMap> = {
    * </RenderHooks>
    * ```
    */
-  hooks?: TValue;
+  hooks?: {
+    [K in keyof TValue]: TValue[K] extends Fn ? TValue[K] : `Please provide a valid function`
+  }
   children: (helpers: CoreHelpers & TValue) => React.ReactNode;
 }
 
